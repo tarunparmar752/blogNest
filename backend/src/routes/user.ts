@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client/scripts/default-index.js";
+import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 import { sign } from "hono/jwt";
@@ -19,8 +19,7 @@ userRouter.post("signup", async (c) => {
     const user = await prisma.user.create({
       data: { email: body.email, password: body.password },
     });
-    const jwt = await sign
-    ({ id: user.id }, c.env.JWT_SECRET);
+    const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
     return c.text(jwt, 201);
   } catch (error) {
     return c.json({ message: "user creaton failed" }, 403);
@@ -39,5 +38,5 @@ userRouter.post("signin", async (c) => {
     return c.json({ message: "user not found" }, 404);
   }
   const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
-  return c.text("jwt:" + jwt);
+  return c.text(jwt);
 });
