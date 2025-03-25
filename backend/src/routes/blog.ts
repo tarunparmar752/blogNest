@@ -68,7 +68,6 @@ blogRouter.get("/bulk", async (c) => {
   }).$extends(withAccelerate());
 
   try {
-    console.log("hey");
     const blogs = await prisma.post.findMany();
     return c.json({ blogs });
   } catch (e) {
